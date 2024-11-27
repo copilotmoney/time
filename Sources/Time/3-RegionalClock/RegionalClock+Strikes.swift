@@ -1,7 +1,8 @@
 import Foundation
 
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 extension RegionalClock {
-    
+
     /// Sets up a repeating strike (ex: "every 5 minutes"), optionally starting at a time other than the present instant.
     ///
     /// - Note: The first "strike" will not occur until *after* `interval` has passed beyond `startTime` (or
@@ -11,12 +12,14 @@ extension RegionalClock {
     ///   - interval: The amount of time that should elapse before the next strike occurs.
     ///   - startTime: The time to start counting at before the first strike occurs.
     /// - Returns: A ``ClockStrikes`` which emits fixed time values at the moment of each strike.
-    public func strike<U: Unit>(producing unit: U.Type = U.self,
-                                every interval: TimeDifference<U, Era>,
-                                startingFrom startTime: Fixed<U>? = nil) -> ClockStrikes<U> {
+    public func strike<U: Unit>(
+        producing unit: U.Type = U.self,
+        every interval: TimeDifference<U, Era>,
+        startingFrom startTime: Fixed<U>? = nil
+    ) -> ClockStrikes<U> {
         return ClockStrikes(clock: self, interval: interval, startTime: startTime)
     }
-    
+
     /// Sets up a repeating strike, optionally starting at a time other than the present instant.
     ///
     /// ```
@@ -28,12 +31,14 @@ extension RegionalClock {
     ///   - every: The unit of time that should elapse before the next strike occurs.
     ///   - startTime: The time to start counting at before the first strike occurs.
     /// - Returns: A ``ClockStrikes`` which emits fixed time values at the moment of each strike.
-    public func strike<U: Unit>(every unit: U.Type,
-                                startingFrom startTime: Fixed<U>? = nil) -> ClockStrikes<U> {
+    public func strike<U: Unit>(
+        every unit: U.Type,
+        startingFrom startTime: Fixed<U>? = nil
+    ) -> ClockStrikes<U> {
         let interval = TimeDifference<U, Era>(value: 1, unit: U.component)
         return ClockStrikes(clock: self, interval: interval, startTime: startTime)
     }
-    
+
     /// Sets up a repeating strike for each unit that matches the given closure.
     ///
     /// ```
@@ -49,11 +54,13 @@ extension RegionalClock {
     ///   - time: A prospective time value.
     ///
     /// - Returns: A ``ClockStrikes`` which emits fixed time values at the moment of each strike.
-    public func strike<U: Unit>(producing unit: U.Type = U.self,
-                                when matches: @escaping (_ time: Fixed<U>) -> Bool) -> ClockStrikes<U> {
+    public func strike<U: Unit>(
+        producing unit: U.Type = U.self,
+        when matches: @escaping (_ time: Fixed<U>) -> Bool
+    ) -> ClockStrikes<U> {
         return ClockStrikes(clock: self, when: matches)
     }
-    
+
     /// Sets up a single strike (ex: "at 12:00 PM").
     ///
     /// Useful, for example, when you want the `RegionalClock` to "tell me when it's 3:00 PM."
@@ -65,7 +72,7 @@ extension RegionalClock {
     public func strike<U: Unit>(at time: Fixed<U>) -> ClockStrikes<U> {
         return ClockStrikes(clock: self, at: time)
     }
-    
+
 }
 
 /// A type representing zero or more times at which a ``RegionalClock`` will "strike".
@@ -91,16 +98,18 @@ extension RegionalClock {
 /// ```
 ///
 /// - SeeAlso: [Striking Clocks (Wikipedia)](https://en.wikipedia.org/wiki/Striking_clock)
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 public struct ClockStrikes<U: Unit & LTOEEra> {
-    
+
     fileprivate let clock: any RegionalClock
     fileprivate let iterator: AnyIterator<Fixed<U>>
-    
-    private init<I: IteratorProtocol>(clock: any RegionalClock, iterator: I) where I.Element == Fixed<U> {
+
+    private init<I: IteratorProtocol>(clock: any RegionalClock, iterator: I)
+    where I.Element == Fixed<U> {
         self.clock = clock
         self.iterator = AnyIterator(iterator)
     }
-    
+
     /// Create a `ClockStrikes` that will emit a value after a specified calendar interval,
     /// when that value matches the provided predicate.
     ///
@@ -109,16 +118,18 @@ public struct ClockStrikes<U: Unit & LTOEEra> {
     ///   - interval: The calendar interval to wait between each subsequent value
     ///   - startTime: The first time at which a value should be emitted. If this value is `nil`, the clock's current time is used.
     ///   - predicate: Only values matching this predicate will be emitted. By default, all emitted values match.
-    public init(clock: any RegionalClock,
-                interval: TimeDifference<U, Era>,
-                startTime: Fixed<U>?,
-                predicate: @escaping (_ time: Fixed<U>) -> Bool = { _ in true }) {
-        
+    public init(
+        clock: any RegionalClock,
+        interval: TimeDifference<U, Era>,
+        startTime: Fixed<U>?,
+        predicate: @escaping (_ time: Fixed<U>) -> Bool = { _ in true }
+    ) {
+
         let start = startTime ?? clock.current()
         let i = FixedSequence(start: start, stride: interval).lazy.filter(predicate).makeIterator()
         self.init(clock: clock, iterator: i)
     }
-    
+
     /// Create a `ClockStrikes` that emits values that match a provided predicate.
     /// - Parameters:
     ///   - clock: The `RegionalClock` to use for producing calendar values
@@ -127,79 +138,81 @@ public struct ClockStrikes<U: Unit & LTOEEra> {
         let interval = TimeDifference<U, Era>(value: 1, unit: U.component)
         self.init(clock: clock, interval: interval, startTime: nil, predicate: matches)
     }
-    
+
     /// Create a `ClockStrikes` that emits at most one value at the specified time.
     /// - Parameters:
     ///   - clock: The `RegionalClock` to use for producing calendar values.
     ///   - time: The time at which to emit the value. If this value is in the past, then the `ClockStrikes` emits no values.
     public init(clock: any RegionalClock, at time: Fixed<U>) {
         let current = clock.current(U.self)
-        var values = Array<Fixed<U>>()
+        var values = [Fixed<U>]()
         if time >= current {
             values = [time]
         }
         self.init(clock: clock, iterator: values.makeIterator())
     }
-    
+
 }
 
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 extension ClockStrikes {
-    
+
     /// The values at which the clock will strike, as a synchronous sequence
     public struct Values: Sequence {
         public typealias Element = Fixed<U>
-        
+
         let strikes: ClockStrikes
-        
+
         public func makeIterator() -> AnyIterator<Fixed<U>> {
             return strikes.iterator
         }
-        
+
     }
-    
+
     /// Retrieve the values at which the clock will strike
     public var values: Values {
         Values(strikes: self)
     }
-    
+
 }
 
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 extension ClockStrikes {
 
     /// The values at which the clock will strikes, as an asynchronous sequence
     public struct AsyncValues: AsyncSequence {
-        
+
         public typealias Element = Fixed<U>
-        
+
         internal let strikes: ClockStrikes
-        
+
         public struct AsyncIterator: AsyncIteratorProtocol {
             public typealias Element = Fixed<U>
-            
+
             fileprivate let clock: any RegionalClock
             fileprivate var baseIterator: AnyIterator<Element>
-            
+
             public mutating func next() async throws -> Fixed<U>? {
                 var nextTime: Fixed<U>? = baseIterator.next()
                 let now = clock.current(U.self)
                 while let next = nextTime, next < now {
                     nextTime = baseIterator.next()
                 }
-                
+
                 guard let next = nextTime else { return nil }
-                
+
                 try await clock.sleep(until: next.firstInstant, tolerance: nil)
                 return next
             }
-            
+
         }
-        
+
         public func makeAsyncIterator() -> AsyncIterator {
             return AsyncIterator(clock: self.strikes.clock, baseIterator: self.strikes.iterator)
         }
-        
+
     }
-    
+
     /// Retrieve the asynchronous values at which the clock will strike
     ///
     /// This value can be used in an async loop, such as:
@@ -214,7 +227,7 @@ extension ClockStrikes {
     public var asyncValues: AsyncValues {
         return AsyncValues(strikes: self)
     }
-    
+
 }
 
 #if canImport(Combine)
@@ -222,29 +235,33 @@ extension ClockStrikes {
 import Combine
 import Dispatch
 
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 extension ClockStrikes {
-    
+
     /// The values at which the clock will strikes, as a Combine publisher
     ///
     /// - Warning: This publisher produces values on an undefined scheduler. If you need to receive
-    /// updates on a particular Scheduler, use the `.receive(on:)` operator. 
+    /// updates on a particular Scheduler, use the `.receive(on:)` operator.
     public struct Publisher: Combine.Publisher {
-        
+
         internal let strikes: ClockStrikes
-        
+
         public typealias Output = Fixed<U>
         public typealias Failure = Never
-        
+
         /// Set up a new Combine subscription for this `ClockStrikes`
         /// - Parameter subscriber: The subscriber that receives strike events
-        public func receive<S>(subscriber: S) where S: Subscriber, Failure == S.Failure, Output == S.Input {
-            let subscription = StrikesSubscription<S, U>(subscriber: subscriber,
-                                                         clock: strikes.clock,
-                                                         iterator: strikes.iterator)
+        public func receive<S>(subscriber: S)
+        where S: Subscriber, Failure == S.Failure, Output == S.Input {
+            let subscription = StrikesSubscription<S, U>(
+                subscriber: subscriber,
+                clock: strikes.clock,
+                iterator: strikes.iterator
+            )
             subscriber.receive(subscription: subscription)
         }
     }
-    
+
     /// Retrieve the publisher which emits the values at which the clock will strike
     ///
     /// - Warning: This publisher produces values on an undefined scheduler. If you need to receive
@@ -252,28 +269,31 @@ extension ClockStrikes {
     public var publisher: Publisher {
         return Publisher(strikes: self)
     }
-    
+
 }
 
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 private class StrikesSubscription<SubscriberType, U>: Subscription
-    where U: Unit,
-          SubscriberType: Subscriber,
-          SubscriberType.Failure == ClockStrikes<U>.Publisher.Failure,
-          SubscriberType.Input == ClockStrikes<U>.Publisher.Output {
-    
+where
+    U: Unit,
+    SubscriberType: Subscriber,
+    SubscriberType.Failure == ClockStrikes<U>.Publisher.Failure,
+    SubscriberType.Input == ClockStrikes<U>.Publisher.Output
+{
+
     private var subscriber: SubscriberType?
     private let clock: any RegionalClock
     private var timeIterator: AnyIterator<Fixed<U>>
     private var nextStrike: CancellationToken?
-    
+
     init(subscriber: SubscriberType, clock: any RegionalClock, iterator: AnyIterator<Fixed<U>>) {
         self.subscriber = subscriber
         self.clock = clock
         self.timeIterator = iterator
-        
+
         scheduleNextStrike()
     }
-    
+
     private func scheduleNextStrike() {
         var nextTime: Fixed<U>? = timeIterator.next()
         let now = clock.current(U.self)
@@ -281,29 +301,33 @@ private class StrikesSubscription<SubscriberType, U>: Subscription
             // make sure we never strike anything in the past
             nextTime = timeIterator.next()
         }
-        
+
         guard let nextStrikeTime = nextTime else {
             subscriber?.receive(completion: .finished)
             cancel()
             return
         }
-        
+
         let strikeInstant = nextStrikeTime.firstInstant
-        self.nextStrike = clock.wait(until: strikeInstant, tolerance: nil, strike: { [weak self] in
-            self?.performStrike(at: nextStrikeTime)
-        })
+        self.nextStrike = clock.wait(
+            until: strikeInstant,
+            tolerance: nil,
+            strike: { [weak self] in
+                self?.performStrike(at: nextStrikeTime)
+            }
+        )
     }
-    
+
     private func performStrike(at time: Fixed<U>) {
         nextStrike = nil
         _ = subscriber?.receive(time)
         scheduleNextStrike()
     }
-    
+
     public func request(_ demand: Subscribers.Demand) {
         // We ignore this, since time doesn't care when we're looking.
     }
-    
+
     public func cancel() {
         nextStrike?.cancel()
         nextStrike = nil

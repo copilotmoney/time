@@ -9,14 +9,16 @@ extension Region: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let calendarContainer = try container.decode(CodableCalendar.self, forKey: .calendar)
         let timeZoneContainer = try container.decode(CodableTimeZone.self, forKey: .timeZone)
         let localeContainer = try container.decode(CodableLocale.self, forKey: .locale)
-        
-        self.init(calendar: calendarContainer.calendar,
-                  timeZone: timeZoneContainer.timeZone,
-                  locale: localeContainer.locale)
+
+        self.init(
+            calendar: calendarContainer.calendar,
+            timeZone: timeZoneContainer.timeZone,
+            locale: localeContainer.locale
+        )
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -32,7 +34,7 @@ extension Fixed: Codable {
     private enum CodingKeys: String, CodingKey {
         case value
         case region
-        
+
         // old key
         case components
     }
@@ -40,7 +42,7 @@ extension Fixed: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let region = try container.decode(Region.self, forKey: .region)
-        
+
         do {
             let instant = try container.decode(Instant.self, forKey: .value)
             self.init(region: region, instant: instant)
@@ -50,7 +52,7 @@ extension Fixed: Codable {
             try self.init(region: region, strictDateComponents: components)
         }
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(region, forKey: .region)
@@ -59,13 +61,13 @@ extension Fixed: Codable {
 }
 
 private struct CodableLocale: Codable {
-    
+
     let locale: Locale
-    
+
     init(locale: Locale) {
         self.locale = locale
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         do {
@@ -75,10 +77,10 @@ private struct CodableLocale: Codable {
             self.locale = try container.decode(Locale.self)
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         let standard = Locale.standard(locale.identifier)
-        
+
         if standard.isEquivalent(to: locale) {
             var single = encoder.singleValueContainer()
             try single.encode(locale.identifier)
@@ -86,17 +88,17 @@ private struct CodableLocale: Codable {
             try locale.encode(to: encoder)
         }
     }
-    
+
 }
 
 private struct CodableTimeZone: Codable {
-    
+
     let timeZone: TimeZone
-    
+
     init(timeZone: TimeZone) {
         self.timeZone = timeZone
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         do {
@@ -106,10 +108,10 @@ private struct CodableTimeZone: Codable {
             self.timeZone = try container.decode(TimeZone.self)
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         let standard = TimeZone.standard(timeZone.identifier)
-        
+
         if standard.isEquivalent(to: timeZone) {
             var single = encoder.singleValueContainer()
             try single.encode(timeZone.identifier)
@@ -117,17 +119,17 @@ private struct CodableTimeZone: Codable {
             try timeZone.encode(to: encoder)
         }
     }
-    
+
 }
 
 private struct CodableCalendar: Codable {
-    
+
     let calendar: Calendar
-    
+
     init(calendar: Calendar) {
         self.calendar = calendar
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         do {
@@ -141,10 +143,10 @@ private struct CodableCalendar: Codable {
             self.calendar = try container.decode(Calendar.self)
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         let standard = Calendar.standard(calendar.identifier)
-        
+
         if standard.isEquivalent(to: calendar) {
             var single = encoder.singleValueContainer()
             // on Linux, Calendar.Identifier does not appear to be Codable
@@ -156,5 +158,5 @@ private struct CodableCalendar: Codable {
             try calendar.encode(to: encoder)
         }
     }
-    
+
 }

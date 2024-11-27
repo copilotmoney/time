@@ -1,7 +1,7 @@
 import Foundation
 
 extension Fixed {
-    
+
     /// Compute the difference between two Fixed values
     ///
     /// This operator is equivalent to `lhs.difference(to: rhs)`.
@@ -13,7 +13,7 @@ extension Fixed {
     public static func - (lhs: Self, rhs: Self) -> TimeDifference<Granularity, Era> {
         return lhs.difference(to: rhs)
     }
-    
+
     /// Compute the difference from this value to another fixed value.
     ///
     /// The granularity of the difference is determined by the granularity of the fixed values. Computing the difference between
@@ -31,11 +31,11 @@ extension Fixed {
     public func difference(to other: Self) -> TimeDifference<Granularity, Era> {
         return computeDifference(to: other)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOEYear {
-    
+
     /// Compute the difference in whole years from this value to another fixed value.
     ///
     /// In order for the returned `TimeDifference` to represent a non-zero value, there must be *at least* a full elapsed year
@@ -47,11 +47,11 @@ extension Fixed where Granularity: LTOEYear {
     public func differenceInWholeYears(to other: Self) -> TimeDifference<Year, Year> {
         return computeDifference(to: other)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOEMonth {
-    
+
     /// Compute the difference in whole months from this value to another fixed value.
     ///
     /// In order for the returned `TimeDifference` to represent a non-zero value, there must be *at least* a full elapsed month
@@ -63,11 +63,11 @@ extension Fixed where Granularity: LTOEMonth {
     public func differenceInWholeMonths(to other: Self) -> TimeDifference<Month, Month> {
         return computeDifference(to: other)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOEDay {
-    
+
     /// Compute the difference in whole days from this value to another fixed value.
     ///
     /// In order for the returned `TimeDifference` to represent a non-zero value, there must be *at least* a full elapsed day
@@ -79,11 +79,11 @@ extension Fixed where Granularity: LTOEDay {
     public func differenceInWholeDays(to other: Self) -> TimeDifference<Day, Day> {
         return computeDifference(to: other)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOEHour {
-    
+
     /// Compute the difference in whole hours from this value to another fixed value.
     ///
     /// In order for the returned `TimeDifference` to represent a non-zero value, there must be *at least* a full elapsed hour
@@ -95,11 +95,11 @@ extension Fixed where Granularity: LTOEHour {
     public func differenceInWholeHours(to other: Self) -> TimeDifference<Hour, Hour> {
         return computeDifference(to: other)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOEMinute {
-    
+
     /// Compute the difference in whole minutes from this value to another fixed value.
     ///
     /// In order for the returned `TimeDifference` to represent a non-zero value, there must be *at least* a full elapsed minute
@@ -111,11 +111,11 @@ extension Fixed where Granularity: LTOEMinute {
     public func differenceInWholeMinutes(to other: Self) -> TimeDifference<Minute, Minute> {
         return computeDifference(to: other)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOESecond {
-    
+
     /// Compute the difference in whole seconds from this value to another fixed value.
     ///
     /// In order for the returned `TimeDifference` to represent a non-zero value, there must be *at least* a full elapsed second
@@ -127,5 +127,5 @@ extension Fixed where Granularity: LTOESecond {
     public func differenceInWholeSeconds(to other: Self) -> TimeDifference<Second, Second> {
         return computeDifference(to: other)
     }
-    
+
 }

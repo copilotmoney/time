@@ -6,11 +6,11 @@ import PackageDescription
 let package = Package(
     name: "Time",
     platforms: [
-        .macOS(.v13),
-        .iOS(.v16),
+        .macOS(.v12),
+        .iOS(.v15),
         .tvOS(.v16),
         .watchOS(.v9),
-        .macCatalyst(.v16),
+        .macCatalyst(.v15),
     ],
     products: [
         .library(name: "Time", targets: ["Time"])
@@ -20,7 +20,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "Time", dependencies: []),
-        
+
         .testTarget(name: "TimeTests", dependencies: ["Time"]),
     ]
 )

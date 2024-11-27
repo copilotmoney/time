@@ -6,7 +6,7 @@ import Foundation
 /// - SeeAlso: ``Fixed/converted(to:behavior:)-3fufq``
 /// - SeeAlso: ``Fixed/converted(to:behavior:)-3meoh``
 public enum ConversionBehavior {
-    
+
     /// When converting a fixed value, the [components](<doc:Terminology>) (day, hour, minute, etc) should be preserved.
     ///
     /// This is a failable operation and may result in a ``TimeError`` being thrown, as the value's
@@ -19,7 +19,7 @@ public enum ConversionBehavior {
     ///
     /// - Warning: In general, this operation only makes sense to perform on fixed values that represent a day (or larger) range.
     case preservingComponents
-    
+
     /// When converting a fixed value, the ``Fixed/range`` should be preserved.
     ///
     /// This operation represents answering the question "if it's 2 PM in Los Angeles, what time is it in Rome?".
@@ -28,11 +28,11 @@ public enum ConversionBehavior {
     /// Attempting to use this on larger units (months, years, and eras) will likely result in a thrown ``TimeError``, since most calendars
     /// do not have the same month, year, or era boundaries as other calendars.
     case preservingRange
-    
+
 }
 
 extension Fixed {
-    
+
     /// Convert a fixed value to a new region.
     ///
     /// - Parameters:
@@ -43,29 +43,29 @@ extension Fixed {
     /// - Warning: This operation may fail for many possible reasons and should be used with care. For full details, see ``ConversionBehavior``.
     public func converted(to newRegion: Region, behavior: ConversionBehavior) throws -> Self {
         if newRegion.isEquivalent(to: self.region) { return self }
-        
+
         switch behavior {
-            case .preservingComponents:
-                return try Fixed(region: newRegion, strictDateComponents: self.dateComponents)
-                
-            case .preservingRange:
-                let currentRange = self.range
-                
-                let midPointValue = Fixed(region: newRegion, instant: self.approximateMidPoint)
-                if midPointValue.range == currentRange { return midPointValue }
-                
-                let startValue = Fixed(region: newRegion, instant: currentRange.lowerBound)
-                if startValue.range == currentRange { return startValue }
-                
-                if self.instant != currentRange.lowerBound {
-                    let instantValue = Fixed(region: newRegion, instant: self.instant)
-                    if instantValue.range == currentRange { return instantValue }
-                }
-                
-                throw TimeError.invalidDateComponents(self.dateComponents, in: newRegion)
+        case .preservingComponents:
+            return try Fixed(region: newRegion, strictDateComponents: self.dateComponents)
+
+        case .preservingRange:
+            let currentRange = self.range
+
+            let midPointValue = Fixed(region: newRegion, instant: self.approximateMidPoint)
+            if midPointValue.range == currentRange { return midPointValue }
+
+            let startValue = Fixed(region: newRegion, instant: currentRange.lowerBound)
+            if startValue.range == currentRange { return startValue }
+
+            if self.instant != currentRange.lowerBound {
+                let instantValue = Fixed(region: newRegion, instant: self.instant)
+                if instantValue.range == currentRange { return instantValue }
+            }
+
+            throw TimeError.invalidDateComponents(self.dateComponents, in: newRegion)
         }
     }
-    
+
     /// Convert a fixed value to a new time zone.
     ///
     /// - Parameters:
@@ -78,7 +78,7 @@ extension Fixed {
         let newRegion = Region(calendar: calendar, timeZone: timeZone, locale: locale)
         return try self.converted(to: newRegion, behavior: behavior)
     }
-    
+
     /// Convert a fixed value to a new calendar.
     ///
     /// - Parameters:
@@ -91,7 +91,7 @@ extension Fixed {
         let newRegion = Region(calendar: calendar, timeZone: timeZone, locale: locale)
         return try self.converted(to: newRegion, behavior: behavior)
     }
-    
+
     /// Construct a new `Fixed` value by converting this fixed value to a new `Locale`.
     ///
     /// Changing a fixed value's locale affects how the value is formatted. It does not change the underlying components.
@@ -99,11 +99,11 @@ extension Fixed {
         let newRegion = Region(calendar: calendar, timeZone: timeZone, locale: locale)
         return Self(region: newRegion, instant: self.instant, components: self.dateComponents)
     }
-    
+
 }
 
 extension Fixed where Granularity: GTOEDay {
-    
+
     /// Convert a fixed date to another time zone
     ///
     /// This works by transitioning the underlying *components* to a new time zone. If successful, the resulting value
@@ -117,11 +117,11 @@ extension Fixed where Granularity: GTOEDay {
         let newRegion = Region(calendar: calendar, timeZone: timeZone, locale: locale)
         return try Self(region: newRegion, strictDateComponents: self.dateComponents)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOEDay {
-    
+
     /// Construct a new `Fixed` value by converting this fixed value to a new `Calendar`.
     ///
     /// - Note: This functionality is only available when dealing with fixed values that represent a day or smaller. All
@@ -134,11 +134,11 @@ extension Fixed where Granularity: LTOEDay {
         let newRegion = Region(calendar: calendar, timeZone: timeZone, locale: locale)
         return Self(region: newRegion, instant: self.approximateMidPoint)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOEHour {
-    
+
     /// Convert a fixed time to another time zone.
     ///
     /// This works by transitioning the underlying time range to the new time zone. Therefore, the resulting components
@@ -151,5 +151,5 @@ extension Fixed where Granularity: LTOEHour {
         let newRegion = Region(calendar: calendar, timeZone: timeZone, locale: locale)
         return Self(region: newRegion, instant: self.firstInstant)
     }
-    
+
 }

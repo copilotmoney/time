@@ -7,10 +7,14 @@ import Foundation
 ///
 /// - SeeAlso: [Allen's Interval Algebra](https://en.wikipedia.org/wiki/Allen%27s_interval_algebra)
 public enum Relation: Hashable, CaseIterable, Sendable {
-    
-    internal static let meetings: Set<Relation> = [.meets, .isMetBy, .starts, .isStartedBy, .finishes, .isFinishedBy]
-    internal static let overlappings: Set<Relation> = [.overlaps, .isOverlappedBy, .during, .contains, .equal]
-    
+
+    internal static let meetings: Set<Relation> = [
+        .meets, .isMetBy, .starts, .isStartedBy, .finishes, .isFinishedBy,
+    ]
+    internal static let overlappings: Set<Relation> = [
+        .overlaps, .isOverlappedBy, .during, .contains, .equal,
+    ]
+
     /// The first range occurs entirely before the second range
     ///
     /// - Example: Range `A` is before range `B`:
@@ -19,7 +23,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     ///          ●--B--○
     /// ````
     case before
-    
+
     /// The first range occurs entirely after the second rage
     ///
     /// - Example: Range `A` is after range `B`:
@@ -28,7 +32,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     ///          ●--A--○
     /// ````
     case after
-    
+
     /// The first range ends where the second range starts
     ///
     /// - Example: Range `A` meets range `B`:
@@ -37,7 +41,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     ///       ●--B--○
     /// ````
     case meets
-    
+
     /// The first range starts where the second range ends
     ///
     /// - Example: Range `A` is met by range `B`:
@@ -46,7 +50,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     ///       ●--A--○
     /// ````
     case isMetBy
-    
+
     /// The first range starts before the second range starts, and ends before the second range ends
     ///
     /// - Example: Range `A` overlaps range `B`:
@@ -55,7 +59,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     ///     ●--B--○
     /// ````
     case overlaps
-    
+
     /// The first range starts after the second range starts, and ends after the second range ends
     ///
     /// - Example: Range `A` is overlapped by range `B`:
@@ -64,7 +68,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     ///     ●--A--○
     /// ````
     case isOverlappedBy
-    
+
     /// The first range starts where the second range starts, and ends before the second range ends
     ///
     /// - Example: Range `A` starts range `B`:
@@ -73,7 +77,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     /// ●----B----○
     /// ````
     case starts
-    
+
     /// The first range starts where the second range starts, and ends after the second range ends
     ///
     /// - Example: Range `A` is started by range `B`:
@@ -82,7 +86,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     /// ●----A----○
     /// ````
     case isStartedBy
-    
+
     /// The first range starts after the second range starts, and ends before the second range ends
     ///
     /// - Example: Range `A` is during range `B`:
@@ -91,7 +95,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     /// ●----B----○
     /// ````
     case during
-    
+
     /// The first range starts before the second range starts, and ends after the second range ends
     ///
     /// - Example: Range `A` contains range `B`:
@@ -100,7 +104,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     /// ●----A----○
     /// ````
     case contains
-    
+
     /// The first range starts after the second range starts, and ends with the second range
     ///
     /// - Example: Range `A` finishes range `B`:
@@ -109,7 +113,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     /// ●----B----○
     /// ````
     case finishes
-    
+
     /// The first range starts before the second range starts, and ends with the second range
     ///
     /// - Example: Range `A` is finished by range `B`:
@@ -118,7 +122,7 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     /// ●----A----○
     /// ````
     case isFinishedBy
-    
+
     /// The first and second ranges start and end together
     ///
     /// - Example: Range `A` equals range `B`:
@@ -127,17 +131,17 @@ public enum Relation: Hashable, CaseIterable, Sendable {
     /// ●----B----○
     /// ````
     case equal
-    
+
     /// Returns `true` if the relation describes two ranges that meet at any extreme
     public var isMeeting: Bool { Relation.meetings.contains(self) }
-    
+
     /// Returns `true` if the relation describes any kind of overlapping
     public var isOverlapping: Bool { Relation.overlappings.contains(self) }
-    
+
     /// Returns `true` if the relation describes disjointedness
     public var isDisjoint: Bool { self == .before || self == .after }
-    
+
     /// Returns `true` if the relation describes equality
     public var isEqual: Bool { self == .equal }
-    
+
 }

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Fixed {
-    
+
     /// Format a `Fixed` value using hard-coded format string.
     ///
     /// The localized format options provided for Fixed values are not always sufficient.
@@ -26,17 +26,18 @@ extension Fixed {
     /// requesting units for formatting that are not represented by this fixed value *and* the `strict` parameter is `true`
     public func format(raw rawFormatString: String, strict: Bool = true) throws -> String {
         let format = try ParsedFormat(formatString: rawFormatString)
-        
+
         let formattedUnits = format.components.compactMap(\.unit)
         let requiredUnits = formattedUnits.map(\.minimumRequiredComponent)
-        
+
         let missingUnits = Set(requiredUnits).subtracting(self.representedComponents)
-        
+
         let style: FixedFormat<Granularity>
         if missingUnits.isEmpty == false {
             if strict == true {
                 // the format string specified units that are not represented by this value
-                let desc = "The provided format string '\(rawFormatString)' includes components (\(missingUnits)) that are not represented in a \(Self.self) value (\(Self.representedComponents))"
+                let desc =
+                    "The provided format string '\(rawFormatString)' includes components (\(missingUnits)) that are not represented in a \(Self.self) value (\(Self.representedComponents))"
                 throw TimeError.invalidFormatString(rawFormatString, units: missingUnits, description: desc)
             } else {
                 style = .init(raw: rawFormatString)

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Fixed where Granularity == Era {
-    
+
     /// Construct a `Fixed<Era>` from the specified numeric components.
     /// - Parameters:
     ///   - region: The `Region` in which the components will be interpreted.
@@ -11,11 +11,11 @@ extension Fixed where Granularity == Era {
         let components = DateComponents(era: era)
         try self.init(region: region, strictDateComponents: components)
     }
-    
+
 }
 
 extension Fixed where Granularity == Year {
-    
+
     /// Construct a `Fixed<Year>` from the specified numeric components.
     /// - Parameters:
     ///   - region: The `Region` in which the components will be interpreted.
@@ -26,11 +26,11 @@ extension Fixed where Granularity == Year {
         let components = DateComponents(era: era, year: year)
         try self.init(region: region, strictDateComponents: components)
     }
-    
+
 }
 
 extension Fixed where Granularity == Month {
-    
+
     /// Construct a `Fixed<Month>` from the specified numeric components.
     /// - Parameters:
     ///   - region: The `Region` in which the components will be interpreted.
@@ -42,11 +42,11 @@ extension Fixed where Granularity == Month {
         let components = DateComponents(era: era, year: year, month: month)
         try self.init(region: region, strictDateComponents: components)
     }
-    
+
 }
 
 extension Fixed where Granularity == Day {
-    
+
     /// Construct a `Fixed<Day>` from the specified numeric components.
     /// - Parameters:
     ///   - region: The `Region` in which the components will be interpreted.
@@ -59,11 +59,11 @@ extension Fixed where Granularity == Day {
         let components = DateComponents(era: era, year: year, month: month, day: day)
         try self.init(region: region, strictDateComponents: components)
     }
-    
+
 }
 
 extension Fixed where Granularity == Hour {
-    
+
     /// Construct a `Fixed<Hour>` from the specified numeric components.
     /// - Parameters:
     ///   - region: The `Region` in which the components will be interpreted.
@@ -77,11 +77,11 @@ extension Fixed where Granularity == Hour {
         let components = DateComponents(era: era, year: year, month: month, day: day, hour: hour)
         try self.init(region: region, strictDateComponents: components)
     }
-    
+
 }
 
 extension Fixed where Granularity == Minute {
-    
+
     /// Construct a `Fixed<Minute>` from the specified numeric components.
     /// - Parameters:
     ///   - region: The `Region` in which the components will be interpreted.
@@ -92,15 +92,30 @@ extension Fixed where Granularity == Minute {
     ///   - hour: the numeric `Hour` value.
     ///   - minute: the numeric `Minute` value.
     /// - Throws: A ``TimeError`` error if the specified components cannot be converted into a calendar value.
-    public init(region: Region, era: Int? = nil, year: Int, month: Int, day: Int, hour: Int, minute: Int) throws {
-        let components = DateComponents(era: era, year: year, month: month, day: day, hour: hour, minute: minute)
+    public init(
+        region: Region,
+        era: Int? = nil,
+        year: Int,
+        month: Int,
+        day: Int,
+        hour: Int,
+        minute: Int
+    ) throws {
+        let components = DateComponents(
+            era: era,
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute
+        )
         try self.init(region: region, strictDateComponents: components)
     }
-    
+
 }
 
 extension Fixed where Granularity == Second {
-    
+
     /// Construct a `Fixed<Second>` from the specified numeric components.
     /// - Parameters:
     ///   - region: The `Region` in which the components will be interpreted.
@@ -112,15 +127,32 @@ extension Fixed where Granularity == Second {
     ///   - minute: the numeric `Minute` value.
     ///   - second: the numeric `Second` value.
     /// - Throws: A ``TimeError`` error if the specified components cannot be converted into a calendar value.
-    public init(region: Region, era: Int? = nil, year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int) throws {
-        let components = DateComponents(era: era, year: year, month: month, day: day, hour: hour, minute: minute, second: second)
+    public init(
+        region: Region,
+        era: Int? = nil,
+        year: Int,
+        month: Int,
+        day: Int,
+        hour: Int,
+        minute: Int,
+        second: Int
+    ) throws {
+        let components = DateComponents(
+            era: era,
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute,
+            second: second
+        )
         try self.init(region: region, strictDateComponents: components)
     }
-    
+
 }
 
 extension Fixed where Granularity == Nanosecond {
-    
+
     /// Construct a `Fixed<Nanosecond>` from the specified numeric components.
     /// - Parameters:
     ///   - region: The `Region` in which the components will be interpreted.
@@ -133,15 +165,34 @@ extension Fixed where Granularity == Nanosecond {
     ///   - second: the numeric `Second` value.
     ///   - nanosecond: the numeric `Nanosecond` value.
     /// - Throws: A ``TimeError`` error if the specified components cannot be converted into a calendar value.
-    public init(region: Region, era: Int? = nil, year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, nanosecond: Int) throws {
-        let components = DateComponents(era: era, year: year, month: month, day: day, hour: hour, minute: minute, second: second, nanosecond: nanosecond)
+    public init(
+        region: Region,
+        era: Int? = nil,
+        year: Int,
+        month: Int,
+        day: Int,
+        hour: Int,
+        minute: Int,
+        second: Int,
+        nanosecond: Int
+    ) throws {
+        let components = DateComponents(
+            era: era,
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute,
+            second: second,
+            nanosecond: nanosecond
+        )
         try self.init(region: region, strictDateComponents: components)
     }
-    
+
 }
 
 extension Fixed {
-    
+
     /// Create a "deep" copy of the fixed value. This is a reasonably expensive operation, and should be used with care.
     ///
     /// This method is useful if you're on a platform that doesn't provide thread safety for the underlying date
@@ -164,8 +215,10 @@ extension Fixed {
     /// Note that modern Apple platforms (iOS, macOS, etc) have thread-safe `Calendar`/`NSCalendar` implementations
     /// and don't suffer from this particular problem.
     public func _forcedCopy() -> Self {
-        return Self(region: region._forcedCopy(), 
-                    instant: Instant(interval: instant.intervalSinceEpoch, since: instant.epoch))
+        return Self(
+            region: region._forcedCopy(),
+            instant: Instant(interval: instant.intervalSinceEpoch, since: instant.epoch)
+        )
     }
-    
+
 }

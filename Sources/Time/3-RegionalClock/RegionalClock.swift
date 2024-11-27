@@ -6,11 +6,12 @@ import Foundation
 /// All `RegionalClocks` use the same types for their instant and duration values (``Instant`` and ``SISeconds`` respectively).
 ///
 /// When implementing a custom `RegionalClock`, the two things that must be implemented are `.region` and `.now`.
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 public protocol RegionalClock: Clock where Instant == Time.Instant, Duration == Time.SISeconds {
-    
+
     /// The clock's `Region`, used for creating calendrical values.
     var region: Region { get }
-    
+
     /// The number of `SISeconds` that pass for every clock second.
     ///
     /// This is used in situations where you wish to "speed up" or "slow down" clock time. A clock that moves
@@ -20,37 +21,39 @@ public protocol RegionalClock: Clock where Instant == Time.Instant, Duration == 
     /// The default value is `1.0`, indicating that the clock advances 1 second for every elapsed `SISecond`
     /// in real time.
     var SISecondsPerClockSecond: Double { get }
-    
+
 }
 
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 extension RegionalClock {
-    
+
     /// The default implementation
     public var SISecondsPerClockSecond: Double { return 1.0 }
-    
+
     /// The default implementation; one nanosecond (1e-9)
     public var minimumResolution: SISeconds { return SISeconds(1.0 / Double(1e9)) }
-    
+
     /// Suspend the current concurrency task until the specified deadline, relative to this clock
     /// - Parameter deadline: The `Instant` at which this task should wake up again, relative to this clock
     /// - Parameter tolerance: How much leeway there is in missing the deadline
     public func sleep(until deadline: Instant, tolerance: Instant.Duration?) async throws {
         try await self.sleep(until: deadline, tolerance: tolerance, token: nil)
     }
-    
+
 }
 
+@available(iOS 16, macOS 13, tvOS 16, watchOS 9, macCatalyst 16, *)
 extension RegionalClock {
-    
+
     /// The `Calendar` used by the `RegionalClock`, as defined by its `region`.
     public var calendar: Calendar { region.calendar }
-    
+
     /// The `TimeZone` used by the `RegionalClock`, as defined by its `region`.
     public var timeZone: TimeZone { region.timeZone }
-    
+
     /// The `Locale` used by the `RegionalClock`, as defined by its `region`.
     public var locale: Locale { region.locale }
-    
+
     /// Offset a clock.
     ///
     /// - Parameter by: the `SISeconds` by which to create an offset clock.
@@ -58,7 +61,7 @@ extension RegionalClock {
     public func offset(by delta: SISeconds) -> any RegionalClock {
         return OffsetClock(offset: delta, from: self)
     }
-    
+
     /// Scale a clock.
     ///
     /// - Parameter by: the `Double` by which to speed up or slow down time
@@ -69,7 +72,7 @@ extension RegionalClock {
         }
         return ScaledClock(scale: factor, from: self)
     }
-    
+
     /// Retrieve the `Instant` of the next daylight saving time transition on this Clock.
     ///
     /// - Parameter after: The `Instant` after which to find the next daylight saving time transition. If omitted, it will be assumed to be the current instant.
@@ -78,7 +81,7 @@ extension RegionalClock {
         let afterInstant = instant ?? now
         return timeZone.nextDaylightSavingTimeTransition(after: afterInstant.date).map(Instant.init)
     }
-    
+
     /// Convert a clock to a new time zone.
     ///
     /// - Parameter timeZone: The `TimeZone` of the new `RegionalClock`.
@@ -88,7 +91,7 @@ extension RegionalClock {
         let newRegion = self.region.setTimeZone(timeZone)
         return self.converted(to: newRegion)
     }
-    
+
     /// Convert a clock to a new calendar.
     ///
     /// - Parameter calendar: The `Calendar` of the new `RegionalClock`.
@@ -98,7 +101,7 @@ extension RegionalClock {
         let newRegion = self.region.setCalendar(calendar)
         return self.converted(to: newRegion)
     }
-    
+
     /// Convert a clock to a new locale.
     ///
     /// - Parameter locale: The `Locale` of the new `RegionalClock`.
@@ -108,7 +111,7 @@ extension RegionalClock {
         let newRegion = self.region.setLocale(locale)
         return self.converted(to: newRegion)
     }
-    
+
     /// Convert a clock to a new region.
     ///
     /// - Parameter region: The `Region` of the new `RegionalClock`.

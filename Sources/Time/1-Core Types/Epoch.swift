@@ -7,7 +7,7 @@ import Foundation
 public struct Epoch: Hashable, Sendable, CustomStringConvertible {
 
     /// Determine if two Epochs are equivalent.
-    public static func ==(lhs: Epoch, rhs: Epoch) -> Bool {
+    public static func == (lhs: Epoch, rhs: Epoch) -> Bool {
         return lhs.offsetFromReferenceDate == rhs.offsetFromReferenceDate
     }
 
@@ -16,35 +16,35 @@ public struct Epoch: Hashable, Sendable, CustomStringConvertible {
 
     /// The Unix epoch (fixed at 1 Jan 1970 00:00:00 UTC).
     public static let unix = Epoch(-SISeconds.secondsBetweenUnixAndReferenceEpochs)
-    
+
     internal let offsetFromReferenceDate: SISeconds
-    
+
     internal init(_ offsetFromReferenceDate: SISeconds) {
         self.offsetFromReferenceDate = offsetFromReferenceDate
     }
-    
+
     public func hash(into hasher: inout Hasher) {
         hasher.combine(offsetFromReferenceDate)
     }
-    
+
     public var description: String {
         if self == .unix { return "unix" }
         if self == .reference { return "reference" }
         return "custom(\(offsetFromReferenceDate))"
     }
-    
+
 }
 
 extension Epoch: Codable {
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         self.init(try container.decode(SISeconds.self))
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(offsetFromReferenceDate)
     }
-    
+
 }

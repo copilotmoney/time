@@ -1,13 +1,13 @@
 import Foundation
 
 extension Fixed where Granularity: GTOEHour, Granularity: LTOEYear {
-    
+
     /// Retrieve the first minute of this fixed value
     public var firstMinute: Fixed<Minute> { return first() }
-    
+
     /// Retrieve the last minute of this fixed value
     public var lastMinute: Fixed<Minute> { return last() }
-    
+
     /// Retrieve a specific 1-based minute from this fixed value
     ///
     /// Example:
@@ -25,7 +25,7 @@ extension Fixed where Granularity: GTOEHour, Granularity: LTOEYear {
     /// 60 minutes in an hour. However, getting the `.nthMinute(72)` of a `Fixed<Day>` is fine, because days typically have more
     /// than 1,440 minutes in them.
     public func nthMinute(_ ordinal: Int) throws -> Fixed<Minute> { return try nth(ordinal) }
-    
+
     /// Get a sequence of all the minutes in this fixed value.
     ///
     /// - If this is a `Fixed<Hour>`, the sequence produces all the minutes in that hour
@@ -38,10 +38,10 @@ extension Fixed where Granularity: GTOEHour, Granularity: LTOEYear {
 }
 
 extension Fixed where Granularity == Hour {
-    
+
     /// Retrieve a minute in this hour with a specific number
     /// - Parameter number: The number of the minute (`0`, `42`, etc)
     /// - Returns: A `Fixed<Minute>` whose `.minute` is equal to the provided `number`, or `nil` if no such minute can be found
     public func minute(_ number: Int) -> Fixed<Minute>? { return numbered(number) }
-    
+
 }

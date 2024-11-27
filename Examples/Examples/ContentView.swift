@@ -12,12 +12,12 @@ struct ContentView: View {
                 .tabItem {
                     Label("Calendar", systemImage: "calendar")
                 }
-            
+
             ClocksView()
                 .tabItem {
                     Label("Clocks", systemImage: "clock")
                 }
-            
+
             CalculatorView()
                 .tabItem {
                     Label("Calculator", systemImage: "calendar.badge.clock")

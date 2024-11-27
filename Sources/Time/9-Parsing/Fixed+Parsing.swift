@@ -1,7 +1,7 @@
 import Foundation
 
 extension Fixed {
-    
+
     /// Attempt to create a fixed value from a string and raw format
     /// - Parameters:
     ///   - stringValue: A string to parse, such as `"2024-01-30"`
@@ -16,5 +16,5 @@ extension Fixed {
             throw TimeError.cannotParseString(stringValue, formatString: rawFormat, in: region)
         }
     }
-    
+
 }

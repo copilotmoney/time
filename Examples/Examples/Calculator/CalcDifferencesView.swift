@@ -9,39 +9,39 @@ import SwiftUI
 import Time
 
 struct CalcDifferencesView: View {
-    @Binding var startSecond : Fixed<Second>
-    @Binding var endSecond : Fixed<Second>
-    
+    @Binding var startSecond: Fixed<Second>
+    @Binding var endSecond: Fixed<Second>
+
     @State var wholeDifference = true
-    
+
     @State var yearDifference = 0
     @State var monthDifference = 0
     @State var dayDifference = 0
     @State var hourDifference = 0
     @State var minuteDifference = 0
     @State var secondDifference = 0
-    
+
     private var conjunction: String { wholeDifference ? "or" : "and" }
-    
+
     var body: some View {
         GroupBox("Differences") {
             VStack {
                 Text("\(startSecond.description)")
                     .font(.headline)
-                
+
                 Text("to")
                     .font(.caption)
-                
+
                 Text("\(endSecond.description)")
                     .font(.headline)
-                
+
                 HStack {
                     Stepper("^[\(yearDifference) year](inflect: true)") {
                         endSecond = endSecond.nextYear
                     } onDecrement: {
                         endSecond = endSecond.previousYear
                     }
-                    
+
                     Picker("Diffence kind", selection: $wholeDifference) {
                         Text("or").tag(true)
                         Text("and").tag(false)
@@ -49,15 +49,15 @@ struct CalcDifferencesView: View {
                     .pickerStyle(.segmented)
                     .fixedSize()
                     .labelsHidden()
-                    
+
                     Stepper("^[\(monthDifference) month](inflect: true)") {
                         endSecond = endSecond.nextMonth
-                    } onDecrement:  {
+                    } onDecrement: {
                         endSecond = endSecond.previousMonth
                     }
-                    
+
                     Text(conjunction)
-                    
+
                     Stepper("^[\(dayDifference) day](inflect: true)") {
                         endSecond = endSecond.nextDay
                     } onDecrement: {
@@ -65,26 +65,26 @@ struct CalcDifferencesView: View {
                     }
                 }
                 .padding(.top, 12)
-                
+
                 HStack {
                     Text(conjunction)
-                    
+
                     Stepper("^[\(hourDifference) hour](inflect: true)") {
                         endSecond = endSecond.nextHour
                     } onDecrement: {
                         endSecond = endSecond.previousHour
                     }
-                    
+
                     Text(conjunction)
-                    
+
                     Stepper("^[\(minuteDifference) minute](inflect: true)") {
                         endSecond = endSecond.nextMinute
                     } onDecrement: {
                         endSecond = endSecond.previousMinute
                     }
-                    
+
                     Text(conjunction)
-                    
+
                     Stepper("^[\(secondDifference) second](inflect: true)") {
                         endSecond = endSecond.nextSecond
                     } onDecrement: {
@@ -100,7 +100,7 @@ struct CalcDifferencesView: View {
         .onChange(of: endSecond) { _ in recompute() }
         .onChange(of: wholeDifference) { _ in recompute() }
     }
-    
+
     private func recompute() {
         if wholeDifference {
             yearDifference = startSecond.differenceInWholeYears(to: endSecond).years
@@ -111,7 +111,7 @@ struct CalcDifferencesView: View {
             secondDifference = startSecond.differenceInWholeSeconds(to: endSecond).seconds
         } else {
             let difference = startSecond.difference(to: endSecond)
-            
+
             yearDifference = difference.years
             monthDifference = difference.months
             dayDifference = difference.days

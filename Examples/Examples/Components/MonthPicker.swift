@@ -11,7 +11,7 @@ import Time
 
 struct YearMonthPicker: View {
     @Binding var month: Fixed<Month>
-    
+
     var body: some View {
         HStack {
             Picker("Month", selection: $month) {
@@ -21,7 +21,7 @@ struct YearMonthPicker: View {
                 }
             }
             .labelsHidden()
-            
+
             Stepper {
                 Text(month.format(year: .naturalDigits))
             } onIncrement: {

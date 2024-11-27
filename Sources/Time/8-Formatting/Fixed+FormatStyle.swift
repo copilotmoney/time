@@ -2,7 +2,7 @@ import Foundation
 
 /// A convenient way to specify general formats for fixed values.
 public struct FixedFormatStyle: Hashable {
-    
+
     /// An extremely verbose format style.
     ///
     /// When applied to date values, a full format style includes the weekday name and fully-spelled-out month name.
@@ -13,7 +13,7 @@ public struct FixedFormatStyle: Hashable {
     ///
     /// Example: `3:12:43 AM Central Standard Time`
     public static let full = FixedFormatStyle(style: .full)
-    
+
     /// A verbose format style.
     ///
     /// When applied to date values, it includes the fully-spelled-out month name.
@@ -24,7 +24,7 @@ public struct FixedFormatStyle: Hashable {
     ///
     /// Example: `3:12:43 AM CST`
     public static let long = FixedFormatStyle(style: .long)
-    
+
     /// A simple format style.
     ///
     /// When applied to dates, it includes an abbreviated month name.
@@ -35,7 +35,7 @@ public struct FixedFormatStyle: Hashable {
     ///
     /// Example: `3:12:43 AM`
     public static let medium = FixedFormatStyle(style: .medium)
-    
+
     /// A terse format style.
     ///
     /// When applied to date values, it uses abbreviated numeric values.
@@ -46,13 +46,13 @@ public struct FixedFormatStyle: Hashable {
     ///
     /// Example: `3:12 AM`
     public static let short = FixedFormatStyle(style: .short)
-    
+
     internal let style: DateFormatter.Style
-    
+
 }
 
 extension Fixed where Granularity: LTOEDay {
-    
+
     /// Format the fixed value's date information
     /// - Parameter dateStyle: The `FixedFormatStyle` to use
     /// - Returns: A localized string containing the formatted date information
@@ -60,11 +60,11 @@ extension Fixed where Granularity: LTOEDay {
         let style = FixedFormat<Granularity>(dateStyle: dateStyle.style, timeStyle: .none)
         return self.format(style)
     }
-    
+
 }
 
 extension Fixed where Granularity: LTOEMinute {
-    
+
     /// Format the fixed value's date and time information
     ///
     /// - Parameters:
@@ -77,7 +77,7 @@ extension Fixed where Granularity: LTOEMinute {
         let style = FixedFormat<Granularity>(dateStyle: dateStyle.style, timeStyle: timeStyle.style)
         return self.format(style)
     }
-    
+
     /// Format the fixed value's time information
     ///
     /// - Parameter timeStyle: The `FixedFormatStyle` to use
@@ -88,5 +88,5 @@ extension Fixed where Granularity: LTOEMinute {
         let style = FixedFormat<Granularity>(dateStyle: .none, timeStyle: timeStyle.style)
         return self.format(style)
     }
-    
+
 }

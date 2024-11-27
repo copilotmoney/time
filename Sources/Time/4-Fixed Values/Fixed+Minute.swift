@@ -1,13 +1,13 @@
 import Foundation
 
 extension Fixed where Granularity: GTOEMinute, Granularity: LTOEYear {
-    
+
     /// Retrieve the first second of this fixed value
     public var firstSecond: Fixed<Second> { return first() }
-    
+
     /// Retrieve the last second of this fixed value
     public var lastSecond: Fixed<Second> { return last() }
-    
+
     /// Retrieve a specific 1-based second from this fixed value.
     ///
     /// Example:
@@ -27,7 +27,7 @@ extension Fixed where Granularity: GTOEMinute, Granularity: LTOEYear {
     /// - Warning: This method does not guarantee a correspondance between the `ordinal` and the returned value's `.second`. Offsetting
     /// and missing seconds (or extra seconds) may mean that the `.second` value may be less than, equal to, or greater than the `ordinal` parameter.
     public func nthSecond(_ ordinal: Int) throws -> Fixed<Second> { return try nth(ordinal) }
-    
+
     /// Get a sequence of all the seconds in this fixed value.
     ///
     /// - If this is a `Fixed<Minute>`, the sequence produces all the seconds in the minute
@@ -37,14 +37,14 @@ extension Fixed where Granularity: GTOEMinute, Granularity: LTOEYear {
     public var seconds: FixedSequence<Second> {
         return FixedSequence(parent: self)
     }
-    
+
 }
 
 extension Fixed where Granularity == Minute {
-    
+
     /// Retrieve a second in this minute with a specific number
     /// - Parameter number: The number of the second (`0`, `13`, etc)
     /// - Returns: A `Fixed<Second>` whose `.sour` is equal to the provided `number`, or `nil` if no such second can be found
     public func second(_ number: Int) -> Fixed<Second>? { return numbered(number) }
-    
+
 }

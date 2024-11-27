@@ -1,7 +1,7 @@
 import Foundation
 
 extension Fixed where Granularity: LTOEYear {
-    
+
     /// Retrieve the fixed era described by this calendar value.
     ///
     /// In effect, this property returns a truncated version of the fixed value;
@@ -10,7 +10,7 @@ extension Fixed where Granularity: LTOEYear {
 }
 
 extension Fixed where Granularity: LTOEMonth {
-    
+
     /// Retrieve the fixed year described by this calendar value.
     ///
     /// In effect, this property returns a truncated version of the fixed value;
@@ -19,7 +19,7 @@ extension Fixed where Granularity: LTOEMonth {
 }
 
 extension Fixed where Granularity: LTOEDay {
-    
+
     /// Retrieve the fixed month described by this calendar value.
     ///
     /// In effect, this property returns a truncated version of the fixed value;
@@ -28,7 +28,7 @@ extension Fixed where Granularity: LTOEDay {
 }
 
 extension Fixed where Granularity: LTOEHour {
-    
+
     /// Retrieve the fixed day described by this calendar value.
     ///
     /// In effect, this property returns a truncated version of the fixed value;
@@ -37,7 +37,7 @@ extension Fixed where Granularity: LTOEHour {
 }
 
 extension Fixed where Granularity: LTOEMinute {
-    
+
     /// Retrieve the fixed hour described by this calendar value.
     ///
     /// In effect, this property returns a truncated version of the fixed value;
@@ -46,7 +46,7 @@ extension Fixed where Granularity: LTOEMinute {
 }
 
 extension Fixed where Granularity: LTOESecond {
-    
+
     /// Retrieve the fixed minute described by this calendar value.
     ///
     /// In effect, this property returns a truncated version of the fixed value;
@@ -55,7 +55,7 @@ extension Fixed where Granularity: LTOESecond {
 }
 
 extension Fixed where Granularity: LTOENanosecond {
-    
+
     /// Retrieve the fixed second described by this calendar value.
     ///
     /// In effect, this property returns a truncated version of the fixed value;

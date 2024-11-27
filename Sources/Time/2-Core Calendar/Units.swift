@@ -1,11 +1,11 @@
 import Foundation
 
 /**
- 
+
  These types form the basis of how the library defines calendrical values.
- 
+
  For the most part, you should never need to interact with anything in this file.
- 
+
  */
 
 // the @_documentation attribute is from https://github.com/apple/swift/pull/60242
@@ -15,7 +15,7 @@ import Foundation
 /// - Warning: You may not implement this protocol.
 public protocol Unit {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     static var _closer: ProtocolCloser<Self> { get }
     static var component: Calendar.Component { get }
@@ -26,10 +26,10 @@ public protocol Unit {
 /// This type is always used as a generic parameter, such as in `Fixed<Nanosecond>`.
 public enum Nanosecond: Unit, LTOENanosecond, GTOENanosecond {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     public static let _closer: ProtocolCloser<Self> = ProtocolCloser()
-    
+
     /// This type represents the `.nanosecond` calendar component
     public static let component: Calendar.Component = .nanosecond
 }
@@ -37,10 +37,10 @@ public enum Nanosecond: Unit, LTOENanosecond, GTOENanosecond {
 /// The representation of seconds to the Swift type system
 public enum Second: Unit, LTOESecond, GTOESecond {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     public static let _closer: ProtocolCloser<Self> = ProtocolCloser()
-    
+
     /// This type represents the `.second` calendar component
     public static let component: Calendar.Component = .second
 }
@@ -48,10 +48,10 @@ public enum Second: Unit, LTOESecond, GTOESecond {
 /// The representation of minutes to the Swift type system
 public enum Minute: Unit, LTOEMinute, GTOEMinute {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     public static let _closer: ProtocolCloser<Self> = ProtocolCloser()
-    
+
     /// This type represents the `.minute` calendar component
     public static let component: Calendar.Component = .minute
 }
@@ -59,10 +59,10 @@ public enum Minute: Unit, LTOEMinute, GTOEMinute {
 /// The representation of hours to the Swift type system
 public enum Hour: Unit, LTOEHour, GTOEHour {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     public static let _closer: ProtocolCloser<Self> = ProtocolCloser()
-    
+
     /// This type represents the `.hour` calendar component
     public static let component: Calendar.Component = .hour
 }
@@ -70,10 +70,10 @@ public enum Hour: Unit, LTOEHour, GTOEHour {
 /// The representation of days to the Swift type system
 public enum Day: Unit, LTOEDay, GTOEDay {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     public static let _closer: ProtocolCloser<Self> = ProtocolCloser()
-    
+
     /// This type represents the `.day` calendar component
     public static let component: Calendar.Component = .day
 }
@@ -81,10 +81,10 @@ public enum Day: Unit, LTOEDay, GTOEDay {
 /// The representation of months to the Swift type system
 public enum Month: Unit, LTOEMonth, GTOEMonth {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     public static let _closer: ProtocolCloser<Self> = ProtocolCloser()
-    
+
     /// This type represents the `.month` calendar component
     public static let component: Calendar.Component = .month
 }
@@ -92,10 +92,10 @@ public enum Month: Unit, LTOEMonth, GTOEMonth {
 /// The representation of years to the Swift type system
 public enum Year: Unit, LTOEYear, GTOEYear {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     public static let _closer: ProtocolCloser<Self> = ProtocolCloser()
-    
+
     /// This type represents the `.year` calendar component
     public static let component: Calendar.Component = .year
 }
@@ -103,10 +103,10 @@ public enum Year: Unit, LTOEYear, GTOEYear {
 /// The representation of eras to the Swift type system
 public enum Era: Unit, LTOEEra, GTOEEra {
     #if swift(>=5.8)
-    @_documentation(visibility: internal)
+    @_documentation(visibility:internal)
     #endif
     public static let _closer: ProtocolCloser<Self> = ProtocolCloser()
-    
+
     /// This type represents the `.era` calendar component
     public static let component: Calendar.Component = .era
 }
@@ -114,92 +114,90 @@ public enum Era: Unit, LTOEEra, GTOEEra {
 // protocols used to define relative unit durations
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol LTOEEra: Unit { }
+public protocol LTOEEra: Unit {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol LTOEYear: LTOEEra { }
+public protocol LTOEYear: LTOEEra {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol LTOEMonth: LTOEYear { }
+public protocol LTOEMonth: LTOEYear {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol LTOEDay: LTOEMonth { }
+public protocol LTOEDay: LTOEMonth {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol LTOEHour: LTOEDay { }
+public protocol LTOEHour: LTOEDay {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol LTOEMinute: LTOEHour { }
+public protocol LTOEMinute: LTOEHour {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol LTOESecond: LTOEMinute { }
+public protocol LTOESecond: LTOEMinute {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol LTOENanosecond: LTOESecond { }
-
-
-#if swift(>=5.8)
-@_documentation(visibility: internal)
-#endif
-public protocol GTOENanosecond: Unit { }
+public protocol LTOENanosecond: LTOESecond {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol GTOESecond: GTOENanosecond { }
+public protocol GTOENanosecond: Unit {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol GTOEMinute: GTOESecond { }
+public protocol GTOESecond: GTOENanosecond {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol GTOEHour: GTOEMinute { }
+public protocol GTOEMinute: GTOESecond {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol GTOEDay: GTOEHour { }
+public protocol GTOEHour: GTOEMinute {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol GTOEMonth: GTOEDay { }
+public protocol GTOEDay: GTOEHour {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol GTOEYear: GTOEMonth { }
+public protocol GTOEMonth: GTOEDay {}
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
-public protocol GTOEEra: GTOEYear { }
+public protocol GTOEYear: GTOEMonth {}
+
+#if swift(>=5.8)
+@_documentation(visibility:internal)
+#endif
+public protocol GTOEEra: GTOEYear {}
 
 // A type used to prevent external types from adopting the Unit protocol
 
 #if swift(>=5.8)
-@_documentation(visibility: internal)
+@_documentation(visibility:internal)
 #endif
 public struct ProtocolCloser<U: Unit> {
-    fileprivate init() { }
+    fileprivate init() {}
 }
-
